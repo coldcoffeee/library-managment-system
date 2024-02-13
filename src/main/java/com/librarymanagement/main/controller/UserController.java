@@ -33,4 +33,14 @@ public class UserController {
     public void deleteUser(@PathVariable Integer userId) {
         libraryUserService.deleteUser(userId);
     }
+
+    @PutMapping("/{userId}")
+    public LibraryUser updateUserDetails(@PathVariable Integer userId, @RequestBody LibraryUser updatedUser) {
+        return libraryUserService.updateUserDetails(userId, updatedUser);
+    }
+
+    @GetMapping("/by-name/{name}")
+    public LibraryUser getUserByName(@PathVariable String name) {
+        return libraryUserService.getUserByName(name);
+    }
 }
