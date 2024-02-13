@@ -12,4 +12,12 @@ public interface BookService {
     Book saveBook(Book book);
 
     void deleteBook(Integer bookId);
+
+    List<Book> getBooksByBookAuthor(String author);
+
+    List<Book> getBooksByBookGenre(String genre);
+
+    List<Book> getBooksByBookTitle(String title);
+
+    Integer getBookStockByBookId(Integer bookId);
 }

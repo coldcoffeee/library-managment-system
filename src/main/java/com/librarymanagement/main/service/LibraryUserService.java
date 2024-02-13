@@ -12,4 +12,9 @@ public interface LibraryUserService {
     LibraryUser saveUser(LibraryUser libraryUser);
 
     void deleteUser(Integer userId);
+
+    LibraryUser updateUserDetails(Integer userId, LibraryUser updatedUser);
+
+    LibraryUser getUserByName(String name);
+
 }

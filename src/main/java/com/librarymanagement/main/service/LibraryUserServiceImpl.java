@@ -32,4 +32,23 @@ public class LibraryUserServiceImpl implements LibraryUserService {
     public void deleteUser(Integer userId) {
         libraryUserRepository.deleteById(userId);
     }
+
+    @Override
+    public LibraryUser updateUserDetails(Integer userId, LibraryUser updatedUser) {
+        LibraryUser user = libraryUserRepository.findById(userId).orElse(null);
+        if (user != null) {
+            // Update user details
+            user.setUserName(updatedUser.getUserName());
+            user.setUserEmail(updatedUser.getUserEmail());
+            user.setUserPhone(updatedUser.getUserPhone());
+            return libraryUserRepository.save(user);
+        }
+        return null;
+    }
+
+    @Override
+    public LibraryUser getUserByName(String name) {
+        return libraryUserRepository.findByUserName(name);
+    }
+
 }

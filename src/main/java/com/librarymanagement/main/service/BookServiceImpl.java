@@ -32,4 +32,24 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Integer bookId) {
         bookRepository.deleteById(bookId);
     }
+
+    @Override
+    public List<Book> getBooksByBookAuthor(String author) {
+        return bookRepository.findByBookAuthor(author);
+    }
+
+    @Override
+    public List<Book> getBooksByBookGenre(String genre) {
+        return bookRepository.findByBookGenre(genre);
+    }
+
+    @Override
+    public List<Book> getBooksByBookTitle(String title) {
+        return bookRepository.findByBookTitle(title);
+    }
+
+    @Override
+    public Integer getBookStockByBookId(Integer bookId) {
+        return bookRepository.findBookStockByBookId(bookId);
+    }
 }

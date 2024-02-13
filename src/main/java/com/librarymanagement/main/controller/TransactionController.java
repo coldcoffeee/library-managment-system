@@ -6,6 +6,7 @@ import com.librarymanagement.main.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -49,4 +50,35 @@ public class TransactionController {
     public List<LibraryUser> getUsersWithFineGreaterThan(@PathVariable Double amount) {
         return transactionService.getUsersWithLateFineGreaterThan(amount);
     }
+
+    @PostMapping("/renew/{transactionId}")
+    public Transaction renewTransaction(@PathVariable Integer transactionId) {
+        return transactionService.renewTransaction(transactionId);
+    }
+    @PostMapping("/receive-book/{transactionId}")
+    public Transaction receiveBook(@PathVariable Integer transactionId) {
+        return transactionService.receiveBook(transactionId);
+    }
+
+    @GetMapping("/by-issue-date/{date}")
+    public List<Transaction> getTransactionsByIssueDate(@PathVariable Date date) {
+        return transactionService.getTransactionsByIssueDate(date);
+    }
+
+    @GetMapping("/by-return-date/{date}")
+    public List<Transaction> getTransactionsByReturnDate(@PathVariable Date date) {
+        return transactionService.getTransactionsByReturnDate(date);
+    }
+
+    @GetMapping("/by-issue-date-greater-than/{date}")
+    public List<Transaction> getTransactionsByIssueDateGreaterThan(@PathVariable Date date) {
+        return transactionService.getTransactionsByIssueDateGreaterThan(date);
+    }
+
+    @GetMapping("/by-return-date-greater-than/{date}")
+    public List<Transaction> getTransactionsByReturnDateGreaterThan(@PathVariable Date date) {
+        return transactionService.getTransactionsByReturnDateGreaterThan(date);
+    }
+
+
 }
