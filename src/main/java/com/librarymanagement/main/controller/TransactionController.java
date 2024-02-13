@@ -6,6 +6,8 @@ import com.librarymanagement.main.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -55,30 +57,38 @@ public class TransactionController {
     public Transaction renewTransaction(@PathVariable Integer transactionId) {
         return transactionService.renewTransaction(transactionId);
     }
+
     @PostMapping("/receive-book/{transactionId}")
     public Transaction receiveBook(@PathVariable Integer transactionId) {
         return transactionService.receiveBook(transactionId);
     }
 
     @GetMapping("/by-issue-date/{date}")
-    public List<Transaction> getTransactionsByIssueDate(@PathVariable Date date) {
+    public List<Transaction> getTransactionsByIssueDate(@PathVariable String dateStr) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(dateStr);
         return transactionService.getTransactionsByIssueDate(date);
     }
 
     @GetMapping("/by-return-date/{date}")
-    public List<Transaction> getTransactionsByReturnDate(@PathVariable Date date) {
+    public List<Transaction> getTransactionsByReturnDate(@PathVariable String dateStr) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(dateStr);
         return transactionService.getTransactionsByReturnDate(date);
     }
 
     @GetMapping("/by-issue-date-greater-than/{date}")
-    public List<Transaction> getTransactionsByIssueDateGreaterThan(@PathVariable Date date) {
+    public List<Transaction> getTransactionsByIssueDateGreaterThan(@PathVariable String dateStr) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(dateStr);
         return transactionService.getTransactionsByIssueDateGreaterThan(date);
     }
 
     @GetMapping("/by-return-date-greater-than/{date}")
-    public List<Transaction> getTransactionsByReturnDateGreaterThan(@PathVariable Date date) {
+    public List<Transaction> getTransactionsByReturnDateGreaterThan(@PathVariable String dateStr) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(dateStr);
         return transactionService.getTransactionsByReturnDateGreaterThan(date);
     }
-
 
 }
