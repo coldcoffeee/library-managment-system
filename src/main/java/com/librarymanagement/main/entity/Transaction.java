@@ -1,6 +1,8 @@
 package com.librarymanagement.main.entity;
 
 import jakarta.persistence.*;
+
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -37,8 +39,21 @@ public class Transaction {
         this.userId = userId;
         this.issueDate = new Date();
         this.returnDate = calculateReturnDate(this.issueDate);
-        this.lateFine = lateFine;
-        this.completionStatus = completionStatus;
+        this.lateFine = 0.0;
+        this.completionStatus = false;
+    }
+
+    public void initializeValues() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        this.issueDate = calendar.getTime();
+        this.returnDate = calculateReturnDate(this.issueDate);
+        this.lateFine = 0.0;
+        this.completionStatus = false;
     }
 
     public Integer getTransactionId() {

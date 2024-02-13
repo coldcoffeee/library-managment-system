@@ -30,6 +30,8 @@ public class TransactionController {
 
     @PostMapping
     public Transaction addTransaction(@RequestBody Transaction transaction) {
+//        Transaction transaction = new Transaction(_transaction.getBookId(), _transaction.getUserId());
+//        System.out.println(transaction);
         return transactionService.saveTransaction(transaction);
     }
 
@@ -63,28 +65,29 @@ public class TransactionController {
         return transactionService.receiveBook(transactionId);
     }
 
-    @GetMapping("/by-issue-date/{date}")
-    public List<Transaction> getTransactionsByIssueDate(@PathVariable String dateStr) throws ParseException {
+//    @GetMapping("/by-return-date/{date:.+}")
+    @GetMapping("/by-issue-date/{date:\\d{4}-\\d{2}-\\d{2}}")
+    public List<Transaction> getTransactionsByIssueDate(@PathVariable String date) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(dateStr);
-        return transactionService.getTransactionsByIssueDate(date);
+        Date parsedDate = dateFormat.parse(date);
+        return transactionService.getTransactionsByIssueDate(parsedDate);
     }
 
-    @GetMapping("/by-return-date/{date}")
+    @GetMapping("/by-return-date/{dateStr:\\d{4}-\\d{2}-\\d{2}}")
     public List<Transaction> getTransactionsByReturnDate(@PathVariable String dateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(dateStr);
         return transactionService.getTransactionsByReturnDate(date);
     }
 
-    @GetMapping("/by-issue-date-greater-than/{date}")
+    @GetMapping("/by-issue-date-greater-than/{dateStr:\\d{4}-\\d{2}-\\d{2}}")
     public List<Transaction> getTransactionsByIssueDateGreaterThan(@PathVariable String dateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(dateStr);
         return transactionService.getTransactionsByIssueDateGreaterThan(date);
     }
 
-    @GetMapping("/by-return-date-greater-than/{date}")
+    @GetMapping("/by-return-date-greater-than/{dateStr:\\d{4}-\\d{2}-\\d{2}}")
     public List<Transaction> getTransactionsByReturnDateGreaterThan(@PathVariable String dateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(dateStr);

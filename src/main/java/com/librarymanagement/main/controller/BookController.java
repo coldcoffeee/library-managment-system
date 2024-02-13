@@ -26,6 +26,7 @@ public class BookController {
 
     @PostMapping
     public Book addBook(@RequestBody Book book) {
+        System.out.println(book);
         return bookService.saveBook(book);
     }
 

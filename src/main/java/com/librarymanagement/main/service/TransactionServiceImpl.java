@@ -41,9 +41,12 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction saveTransaction(Transaction transaction) {
         LibraryUser user = libraryUserRepository.getReferenceById(transaction.getUserId());
         Book book = bookRepository.getReferenceById(transaction.getBookId());
-        if(book == null || user == null || transactionRepository.findIncompleteTransactionOfUser(user.getUserId()) != null || book.getBookStock() > 0) return null;
+        if(book == null || user == null || transactionRepository.findIncompleteTransactionOfUser(user.getUserId()) != null || book.getBookStock() <= 0) {
+            return null;
+        }
         book.setBookStock(book.getBookStock() - 1);
         bookRepository.save(book);
+        transaction.initializeValues();
         return transactionRepository.save(transaction);
     }
 
@@ -116,7 +119,8 @@ public class TransactionServiceImpl implements TransactionService {
         if(t == null) return null;
         updateUsersLateFine(t.getUserId());
         LocalDate returnDate = LocalDate.now().plusDays(14);
-        t.setReturnDate(Date.from(returnDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        Date returnDateWithMidnight = Date.from(returnDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        t.setReturnDate(returnDateWithMidnight);
         return transactionRepository.save(t);
     }
 
@@ -124,8 +128,11 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction receiveBook(Integer transactionId) {
         Transaction t = transactionRepository.getReferenceById(transactionId);
         updateUsersLateFine(t.getUserId());
-        t.setCompletionStatus(false);
-        t.setReturnDate(new Date());
+        t.setCompletionStatus(true);
+        LocalDate currentDate = LocalDate.now();
+        Date returnDateWithMidnight = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        t.setReturnDate(returnDateWithMidnight);
+
         return transactionRepository.save(t);
     }
 
