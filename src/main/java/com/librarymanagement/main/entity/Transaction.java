@@ -2,8 +2,7 @@ package com.librarymanagement.main.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.*;
 
 @Entity
 @Table
@@ -16,19 +15,14 @@ public class Transaction {
     @Column
     private Integer userId;
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date issueDate;
+    private LocalDate issueDate;
     @Column
-    private Date returnDate;
+    private LocalDate returnDate;
     @Column
     private Double lateFine;
     @Column
     private Boolean completionStatus;
 
-    private static Date calculateReturnDate(Date issueDate) {
-        long returnDateInMillis = issueDate.getTime() + (14 * 24 * 60 * 60 * 1000);
-        return new Date(returnDateInMillis);
-    }
 
     public Transaction() {
     }
@@ -37,21 +31,15 @@ public class Transaction {
         this.transactionId = transactionId;
         this.bookId = bookId;
         this.userId = userId;
-        this.issueDate = new Date();
-        this.returnDate = calculateReturnDate(this.issueDate);
+        this.issueDate = LocalDate.now();
+        this.returnDate = this.issueDate.plusDays(14);
         this.lateFine = 0.0;
         this.completionStatus = false;
     }
 
     public void initializeValues() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        this.issueDate = calendar.getTime();
-        this.returnDate = calculateReturnDate(this.issueDate);
+        this.issueDate = LocalDate.now();
+        this.returnDate = this.issueDate.plusDays(14);
         this.lateFine = 0.0;
         this.completionStatus = false;
     }
@@ -80,11 +68,11 @@ public class Transaction {
         this.userId = userId;
     }
 
-    public Date getIssueDate() {
+    public LocalDate getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(Date issueDate) {
+    public void setIssueDate(LocalDate issueDate) {
         this.issueDate = issueDate;
     }
 
@@ -100,11 +88,11 @@ public class Transaction {
         return completionStatus;
     }
 
-    public Date getReturnDate() {
+    public LocalDate getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDate returnDate) {
         this.returnDate = returnDate;
     }
 

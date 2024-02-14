@@ -9,6 +9,7 @@ import com.librarymanagement.main.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.time.LocalDate;
@@ -75,64 +76,60 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void updateLateFineForIncompleteTransactions() {
         List<Transaction> incompleteTransactions = transactionRepository.findIncompleteTransactions();
-        LocalDate now = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now();
         for(Transaction t: incompleteTransactions) {
-            if(t.getReturnDate().after(new Date())) continue;
-            LocalDate local = t.getReturnDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            t.setLateFine(ChronoUnit.DAYS.between(now, local) * 100.0);
+            if(t.getReturnDate().isAfter(now)) continue;
+            t.setLateFine(ChronoUnit.DAYS.between(now, t.getReturnDate()) * 100.0);
             transactionRepository.save(t);
         }
     }
     @Override
     public void updateUsersLateFine(Integer userId) {
         Transaction t = transactionRepository.findIncompleteTransactionOfUser(userId);
-        LocalDate now = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        if(t.getReturnDate().after(new Date())) return;
-        LocalDate local = t.getReturnDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        t.setLateFine(ChronoUnit.DAYS.between(now, local) * 100.0);
+        LocalDate now = LocalDate.now();
+        if(t.getReturnDate().isAfter(now)) return;
+        t.setLateFine(ChronoUnit.DAYS.between(now, t.getReturnDate()) * 100.0);
         transactionRepository.save(t);
     }
 
     @Override
-    public List<Transaction> getTransactionsByIssueDate(Date date) {
-        return transactionRepository.findByIssueDate(date);
+    public List<Transaction> getTransactionsByIssueDate(LocalDate localDate) {
+        return transactionRepository.findByIssueDate(localDate);
     }
 
     @Override
-    public List<Transaction> getTransactionsByReturnDate(Date date) {
-        return transactionRepository.findByReturnDate(date);
+    public List<Transaction> getTransactionsByReturnDate(LocalDate localDate) {
+        return transactionRepository.findByReturnDate(localDate);
     }
 
     @Override
-    public List<Transaction> getTransactionsByIssueDateGreaterThan(Date date) {
-        return transactionRepository.findByIssueDateGreaterThan(date);
+    public List<Transaction> getTransactionsByIssueDateGreaterThan(LocalDate localDate) {
+        return transactionRepository.findByIssueDateGreaterThan(localDate);
     }
 
     @Override
-    public List<Transaction> getTransactionsByReturnDateGreaterThan(Date date) {
-        return transactionRepository.findByReturnDateGreaterThan(date);
+    public List<Transaction> getTransactionsByReturnDateGreaterThan(LocalDate localDate) {
+        return transactionRepository.findByReturnDateGreaterThan(localDate);
     }
 
     @Override
     public Transaction renewTransaction(Integer transactionId) {
         Transaction t = transactionRepository.getReferenceById(transactionId);
         if(t == null) return null;
+        if(t.getCompletionStatus()) return t;
         updateUsersLateFine(t.getUserId());
         LocalDate returnDate = LocalDate.now().plusDays(14);
-        Date returnDateWithMidnight = Date.from(returnDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        t.setReturnDate(returnDateWithMidnight);
+        t.setReturnDate(returnDate);
         return transactionRepository.save(t);
     }
 
     @Override
     public Transaction receiveBook(Integer transactionId) {
         Transaction t = transactionRepository.getReferenceById(transactionId);
+        if(t.getCompletionStatus()) return t;
         updateUsersLateFine(t.getUserId());
         t.setCompletionStatus(true);
-        LocalDate currentDate = LocalDate.now();
-        Date returnDateWithMidnight = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        t.setReturnDate(returnDateWithMidnight);
-
+        t.setReturnDate(LocalDate.now());
         return transactionRepository.save(t);
     }
 

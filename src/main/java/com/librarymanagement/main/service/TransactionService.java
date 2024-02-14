@@ -3,6 +3,7 @@ package com.librarymanagement.main.service;
 import com.librarymanagement.main.entity.LibraryUser;
 import com.librarymanagement.main.entity.Transaction;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -25,13 +26,13 @@ public interface TransactionService {
 
     void updateUsersLateFine(Integer userId);
 
-    List<Transaction> getTransactionsByIssueDate(Date date);
+    List<Transaction> getTransactionsByIssueDate(LocalDate date);
 
-    List<Transaction> getTransactionsByReturnDate(Date date);
+    List<Transaction> getTransactionsByReturnDate(LocalDate date);
 
-    List<Transaction> getTransactionsByIssueDateGreaterThan(Date date);
+    List<Transaction> getTransactionsByIssueDateGreaterThan(LocalDate date);
 
-    List<Transaction> getTransactionsByReturnDateGreaterThan(Date date);
+    List<Transaction> getTransactionsByReturnDateGreaterThan(LocalDate date);
 
     Transaction renewTransaction(Integer transactionId);
 

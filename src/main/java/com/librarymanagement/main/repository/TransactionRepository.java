@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,11 +22,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query("SELECT t from Transaction t where t.completionStatus = false AND t.userId = :userId")
     Transaction  findIncompleteTransactionOfUser(Integer userId);
 
-    List<Transaction> findByIssueDate(Date date);
+    List<Transaction> findByIssueDate(LocalDate date);
 
-    List<Transaction> findByReturnDate(Date date);
+    List<Transaction> findByReturnDate(LocalDate date);
 
-    List<Transaction> findByIssueDateGreaterThan(Date date);
+    List<Transaction> findByIssueDateGreaterThan(LocalDate date);
 
-    List<Transaction> findByReturnDateGreaterThan(Date date);
+    List<Transaction> findByReturnDateGreaterThan(LocalDate date);
 }

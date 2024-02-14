@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -70,28 +73,36 @@ public class TransactionController {
     public List<Transaction> getTransactionsByIssueDate(@PathVariable String date) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date parsedDate = dateFormat.parse(date);
-        return transactionService.getTransactionsByIssueDate(parsedDate);
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate localDate = Instant.ofEpochMilli(parsedDate.getTime()).atZone(defaultZoneId).toLocalDate();
+        return transactionService.getTransactionsByIssueDate(localDate);
     }
 
     @GetMapping("/by-return-date/{dateStr:\\d{4}-\\d{2}-\\d{2}}")
     public List<Transaction> getTransactionsByReturnDate(@PathVariable String dateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(dateStr);
-        return transactionService.getTransactionsByReturnDate(date);
+        Date parsedDate = dateFormat.parse(dateStr);
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate localDate = Instant.ofEpochMilli(parsedDate.getTime()).atZone(defaultZoneId).toLocalDate();
+        return transactionService.getTransactionsByReturnDate(localDate);
     }
 
     @GetMapping("/by-issue-date-greater-than/{dateStr:\\d{4}-\\d{2}-\\d{2}}")
     public List<Transaction> getTransactionsByIssueDateGreaterThan(@PathVariable String dateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(dateStr);
-        return transactionService.getTransactionsByIssueDateGreaterThan(date);
+        Date parsedDate = dateFormat.parse(dateStr);
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate localDate = Instant.ofEpochMilli(parsedDate.getTime()).atZone(defaultZoneId).toLocalDate();
+        return transactionService.getTransactionsByIssueDateGreaterThan(localDate);
     }
 
     @GetMapping("/by-return-date-greater-than/{dateStr:\\d{4}-\\d{2}-\\d{2}}")
     public List<Transaction> getTransactionsByReturnDateGreaterThan(@PathVariable String dateStr) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(dateStr);
-        return transactionService.getTransactionsByReturnDateGreaterThan(date);
+        Date parsedDate = dateFormat.parse(dateStr);
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        LocalDate localDate = Instant.ofEpochMilli(parsedDate.getTime()).atZone(defaultZoneId).toLocalDate();
+        return transactionService.getTransactionsByReturnDateGreaterThan(localDate);
     }
 
 }

@@ -49,7 +49,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Integer getBookStockByBookId(Integer bookId) {
+    public Double getBookStockByBookId(Integer bookId) {
         return bookRepository.findBookStockByBookId(bookId);
     }
 }
