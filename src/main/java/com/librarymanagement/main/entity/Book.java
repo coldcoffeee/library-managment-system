@@ -1,6 +1,8 @@
 package com.librarymanagement.main.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table
@@ -9,14 +11,20 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer bookId;
     @Column
+    @NotEmpty(message = "Please provide a book title.")
     private String bookTitle;
     @Column
+    @NotEmpty(message = "Please provide the author's name.")
     private String bookAuthor;
     @Column
+    @NotEmpty(message = "Please provide the genre.")
     private String bookGenre;
     @Column
+    @NotEmpty(message = "Please provide the book's price.")
     private Double bookPrice;
     @Column
+    @NotEmpty(message = "Please specify the book's stock.")
+    @Min(value = 1, message = "Book stock must at least be 1.")
     private Integer bookStock;
 
     public Book() {

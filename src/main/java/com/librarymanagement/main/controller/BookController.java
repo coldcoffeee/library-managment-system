@@ -51,7 +51,7 @@ public class BookController {
     }
 
     @GetMapping("/stock/{bookId}")
-    public Double getBookStock(@PathVariable Integer bookId) {
+    public Integer getBookStock(@PathVariable Integer bookId) {
         return bookService.getBookStockByBookId(bookId);
     }
 }

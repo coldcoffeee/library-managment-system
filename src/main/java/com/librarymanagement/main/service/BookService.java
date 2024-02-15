@@ -19,5 +19,5 @@ public interface BookService {
 
     List<Book> getBooksByBookTitle(String title);
 
-    Double getBookStockByBookId(Integer bookId);
+    Integer getBookStockByBookId(Integer bookId);
 }
