@@ -35,6 +35,16 @@ public class Transaction {
     public Transaction() {
     }
 
+    public Transaction(Integer transactionId, Integer bookId, Integer userId, LocalDate issueDate, LocalDate returnDate, Double lateFine, Boolean completionStatus) {
+        this.transactionId = transactionId;
+        this.bookId = bookId;
+        this.userId = userId;
+        this.issueDate = issueDate;
+        this.returnDate = returnDate;
+        this.lateFine = lateFine;
+        this.completionStatus = completionStatus;
+    }
+
     public Transaction(Integer transactionId, Integer bookId, Integer userId, Double lateFine, Boolean completionStatus) {
         this.transactionId = transactionId;
         this.bookId = bookId;

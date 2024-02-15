@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
@@ -56,11 +57,12 @@ public class BookServiceTest {
 
     @Test
     public void testDeleteBook() {
-        Integer bookId = 1;
+        Book expectedBook = new Book(1, "The Hobbit", "J.R.R. Tolkien", "Fantasy", 599.00, 100);
+        when(bookRepository.findById(expectedBook.getBookId())).thenReturn(Optional.of(expectedBook));
 
-        bookService.deleteBook(bookId);
+        bookService.deleteBook(1);
 
-        verify(bookRepository, times(1)).deleteById(bookId);
+        verify(bookRepository, times(1)).deleteById(1);
     }
 
     @Test
