@@ -1,6 +1,7 @@
 package com.librarymanagement.main.service;
 
 import com.librarymanagement.main.entity.LibraryUser;
+import com.librarymanagement.main.exception.UserNotFoundException;
 import com.librarymanagement.main.repository.LibraryUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 
     @Override
     public LibraryUser getUserById(Integer userId) {
-        return libraryUserRepository.findById(userId).orElse(null);
+        return libraryUserRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
     }
 
     @Override
@@ -30,25 +32,30 @@ public class LibraryUserServiceImpl implements LibraryUserService {
 
     @Override
     public void deleteUser(Integer userId) {
+        if (!libraryUserRepository.existsById(userId)) {
+            throw new UserNotFoundException("User with ID " + userId + " not found");
+        }
         libraryUserRepository.deleteById(userId);
     }
 
     @Override
     public LibraryUser updateUserDetails(Integer userId, LibraryUser updatedUser) {
-        LibraryUser user = libraryUserRepository.findById(userId).orElse(null);
-        if (user != null) {
-            // Update user details
-            user.setUserName(updatedUser.getUserName());
-            user.setUserEmail(updatedUser.getUserEmail());
-            user.setUserPhone(updatedUser.getUserPhone());
-            return libraryUserRepository.save(user);
-        }
-        return null;
+        LibraryUser user = libraryUserRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
+
+        // Update user details
+        user.setUserName(updatedUser.getUserName());
+        user.setUserEmail(updatedUser.getUserEmail());
+        user.setUserPhone(updatedUser.getUserPhone());
+        return libraryUserRepository.save(user);
     }
 
     @Override
     public LibraryUser getUserByName(String name) {
-        return libraryUserRepository.findByUserName(name);
+        LibraryUser user = libraryUserRepository.findByUserName(name);
+        if (user == null) {
+            throw new UserNotFoundException("User with name " + name + " not found");
+        }
+        return user;
     }
-
 }

@@ -3,6 +3,7 @@ package com.librarymanagement.main.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
@@ -19,7 +20,7 @@ public class LibraryUser {
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Please provide a valid email address.")
     private String userEmail;
     @Column
-    @NotEmpty(message = "Please provide the user's phone number.")
+    @NotNull(message = "Please provide the user's phone number.")
     @Min(value = 1000000000L, message = "Phone number must at least be 10 digits long.")
     private Long userPhone;
 

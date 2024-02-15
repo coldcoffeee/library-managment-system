@@ -2,6 +2,7 @@ package com.librarymanagement.main.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.*;
 
@@ -12,10 +13,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer transactionId;
     @Column
-    @NotEmpty(message = "Please provide the id of the book to lend.")
+    @NotNull(message = "Please provide the id of the book to lend.")
     private Integer bookId;
     @Column
-    @NotEmpty(message = "Please provide the id of the user lending the book.")
+    @NotNull(message = "Please provide the id of the user lending the book.")
     private Integer userId;
     @Column
     @NotEmpty(message = "Please provide the issue date.")
@@ -24,10 +25,10 @@ public class Transaction {
     @NotEmpty
     private LocalDate returnDate;
     @Column
-    @NotEmpty
+    @NotNull
     private Double lateFine;
     @Column
-    @NotEmpty
+    @NotNull
     private Boolean completionStatus;
 
 

@@ -3,6 +3,7 @@ package com.librarymanagement.main.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -20,10 +21,10 @@ public class Book {
     @NotEmpty(message = "Please provide the genre.")
     private String bookGenre;
     @Column
-    @NotEmpty(message = "Please provide the book's price.")
+    @NotNull(message = "Please provide the book's price.")
     private Double bookPrice;
     @Column
-    @NotEmpty(message = "Please specify the book's stock.")
+    @NotNull(message = "Please specify the book's stock.")
     @Min(value = 1, message = "Book stock must at least be 1.")
     private Integer bookStock;
 

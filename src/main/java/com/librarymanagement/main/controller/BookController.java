@@ -2,6 +2,7 @@ package com.librarymanagement.main.controller;
 
 import com.librarymanagement.main.entity.Book;
 import com.librarymanagement.main.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class BookController {
     }
 
     @PostMapping
-    public Book addBook(@RequestBody Book book) {
+    public Book addBook(@Valid @RequestBody Book book) {
         System.out.println(book);
         return bookService.saveBook(book);
     }
